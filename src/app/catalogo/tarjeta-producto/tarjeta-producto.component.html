@@ -1,0 +1,43 @@
+<div class="card h-100">
+  <img
+    [src]="producto.urlImagen"
+    [alt]="producto.nombre"
+    class="card-img-top"
+    style="height: 200px; object-fit: cover"
+  />
+
+  <div class="card-body">
+    <h5 class="card-title">{{ producto.nombre }}</h5>
+    <p class="card-text">{{ producto.descripcion }}</p>
+    <p class="card-text">
+      <small class="text-muted">
+        Tiempo de preparación: {{ producto.tiempoPreparacion }} min
+      </small>
+    </p>
+    <p class="text-primary fw-bold">€{{ producto.precio.toFixed(2) }}</p>
+  </div>
+
+  <div
+    class="card-footer d-flex justify-content-between align-items-center bg-white border-top"
+  >
+    <button
+      class="btn btn-outline-primary"
+      [routerLink]="['/catalogo', producto._id]"
+    >
+      Ver Detalles
+    </button>
+    <button
+      class="btn btn-primary"
+      (click)="onAgregarClick()"
+      [disabled]="!producto.disponible"
+    >
+      Añadir al carrito
+    </button>
+  </div>
+
+  @if (!producto.disponible) {
+  <div class="position-absolute top-0 end-0 p-2">
+    <span class="badge bg-danger">No disponible</span>
+  </div>
+  }
+</div>

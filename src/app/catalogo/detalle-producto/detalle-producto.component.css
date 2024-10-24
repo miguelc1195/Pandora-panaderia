@@ -1,0 +1,29 @@
+.producto-imagen {
+    max-height: 400px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .descripcion {
+    font-size: 1.1rem;
+    margin: 20px 0;
+    color: #666;
+  }
+  
+  .precio {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .detalles {
+    margin: 20px 0;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .botones {
+    margin-top: 20px;
+  }
