@@ -1,5 +1,5 @@
-<header class="bg-primary">
-  <nav class="navbar navbar-expand-lg navbar-dark">
+<header class="custom-navbar">
+  <nav class="navbar navbar-expand-lg">
     <div class="container">
       <a class="navbar-brand" routerLink="/">PANdora</a>
       
@@ -27,8 +27,8 @@
         </ul>
         
         <div class="navbar-nav">
-          <a class="nav-link" href="#">Iniciar Sesión</a>
-          <a class="nav-link" href="#">Registrarse</a>
+          <a class="nav-link" routerLink="/login">Iniciar Sesión</a>
+          <a class="nav-link" routerLink="/registro">Registrarse</a>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
   <router-outlet></router-outlet>
 </main>
 
-<footer class="bg-light py-3 mt-auto">
+<footer class="custom-footer py-3 mt-auto">
   <div class="container text-center">
     <p class="mb-0">PANdora</p>
   </div>

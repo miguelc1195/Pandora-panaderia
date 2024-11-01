@@ -29,6 +29,16 @@ export const routes: Routes = [
     loadComponent: () => import('./admin/admin.component')
       .then(m => m.AdminComponent)
   },
+  {
+    path: 'login',
+    loadComponent: () => import('./login/login.component')
+    .then(m=> m.LoginComponent)
+  },
+  {
+    path: 'registro',
+    loadComponent: () => import('./registro/registro.component')
+    .then(m => m.RegistroComponent)
+  },
 
   // en caso de que no se encuentre la ruta redirige a catalogo
   { 

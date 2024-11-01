@@ -24,19 +24,12 @@
                     [disabled]="!producto.disponible">
               Añadir al carrito
             </button>
-            <button class="btn btn-secondary" 
+            <button class="btn btn-outline-primary" 
                     routerLink="/catalogo">
               Volver
             </button>
           </div>
         </div>
       </div>
-    } @else {
-      <div class="text-center">
-        <h3>Cargando producto...</h3>
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    }
+    } 
   </div>
