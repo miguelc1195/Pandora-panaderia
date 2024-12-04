@@ -1,1 +1,211 @@
-<p>admin works!</p>
+<div class="container mt-4">
+  <h2>Panel de Administración</h2>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card resumen-card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="mb-0">Total Reservas</h5>
+              <h2 class="mb-0">
+                {{ reservasActivas.length + historialReservas.length }}
+              </h2>
+            </div>
+            <div>
+              <h5 class="mb-0">Pendientes</h5>
+              <h2 class="mb-0 text-warning">{{ reservasActivas.length }}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <button
+        class="btn me-2"
+        [class.btn-primary]="!mostrarHistorial && !mostrarStock"
+        [class.btn-outline-primary]="mostrarHistorial || mostrarStock"
+        (click)="mostrarHistorial = false; mostrarStock = false"
+      >
+        Reservas Activas
+      </button>
+      <button
+        class="btn"
+        [class.btn-primary]="mostrarHistorial"
+        [class.btn-outline-primary]="!mostrarHistorial"
+        (click)="mostrarHistorial = true; mostrarStock = false"
+      >
+        Historial
+      </button>
+      <button
+        class="btn ms-2"
+        [class.btn-primary]="mostrarStock"
+        [class.btn-outline-primary]="!mostrarStock"
+        (click)="mostrarStock = true; mostrarHistorial = false"
+      >
+        Gestión Stock
+      </button>
+    </div>
+
+    @if (mostrarStock) {
+    <div class="mb-4">
+      <h3>Stock de Productos</h3>
+      <div class="row">
+        @for (producto of productos; track producto._id) {
+        <div class="col-md-6 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h5 class="mb-1">{{ producto.nombre }}</h5>
+                  <p class="mb-0">Stock actual: {{ producto.stock }}</p>
+                </div>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="number"
+                    class="form-control me-2"
+                    style="width: 100px"
+                    [(ngModel)]="producto.stock"
+                    min="0"
+                    max="50"
+                  />
+                  <button
+                    class="btn btn-sm btn-primary"
+                    (click)="actualizarStock(producto)"
+                  >
+                    Actualizar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card resumen-card">
+        <div class="card-body">
+          <h5 class="mb-2">Gestión de Stock</h5>
+          <div class="d-flex">
+            <button class="btn btn-primary" (click)="reinicioStock()">
+              Reiniciar Stock de Productos
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    } @if (!mostrarHistorial && !mostrarStock) {
+    <h3 class="mb-4">Reservas Activas</h3>
+    @if (reservasActivas.length === 0) {
+    <div class="text-center py-5">
+      <p>No hay reservas activas</p>
+    </div>
+    } @else { @for (reserva of reservasActivas; track reserva._id) {
+    <div class="card mb-3">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <div>
+          <span>Usuario: {{ reserva.usuario }}</span>
+          <br />
+          <span
+            >Realizada: {{ reserva.fechaCreacion | date : "dd/MM/yyyy" }} a las
+            {{ reserva.fechaCreacion | date : "HH:mm" }}</span
+          >
+        </div>
+        <div class="d-flex align-items-center">
+          <span class="me-3">
+            Entregar : {{ reserva.fechaRecogida | date : "dd/MM/yyyy" }} a las
+            {{ reserva.horaRecogida }}
+          </span>
+          <span class="estado-badge fw-bold estado-pendiente">Pendiente</span>
+          <button
+            class="btn btn-success btn-sm"
+            *ngIf="esMismaFecha(reserva.fechaRecogida)"
+            (click)="marcarComoCompletada(reserva._id!)"
+          >
+            Marcar como completada
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          @for (producto of reserva.productos; track producto.producto) {
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <div>
+              {{ producto.producto }}
+              @if (producto.extra) {
+              <small class="text-muted ms-2">({{ producto.extra }})</small>
+              }
+            </div>
+            <div class="text-end">
+              <span>{{ producto.cantidad }}x</span>
+              <span class="ms-2"
+                >{{ producto.precio * producto.cantidad }}€</span
+              >
+            </div>
+          </li>
+          }
+        </ul>
+        <div class="mt-3 text-end">
+          <h5>Total: {{ reserva.precioTotal }}€</h5>
+        </div>
+      </div>
+    </div>
+    } } } @if (mostrarHistorial && !mostrarStock) {
+    <h3 class="mb-4">Historial de Reservas</h3>
+    @if (historialReservas.length === 0) {
+    <div class="text-center py-5">
+      <p>No hay reservas en el historial</p>
+    </div>
+    } @else { @for (reserva of historialReservas; track reserva._id) {
+    <div class="card mb-3">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <div>
+          <span>Usuario: {{ reserva.usuario }}</span>
+          <br />
+          <span
+            >Realizada: {{ reserva.fechaCreacion | date : "dd/MM/yyyy" }} a las
+            {{ reserva.fechaCreacion | date : "HH:mm" }}</span
+          >
+        </div>
+        <span class="me-3">
+          Recogida: {{ reserva.fechaRecogida | date : "dd/MM/yyyy" }} a las
+          {{ reserva.horaRecogida }}
+        </span>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          @for (producto of reserva.productos; track producto.producto) {
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <div>
+              {{ producto.producto }}
+              @if (producto.extra) {
+              <small class="text-muted ms-2">({{ producto.extra }})</small>
+              }
+            </div>
+            <div class="text-end">
+              <span>{{ producto.cantidad }}x</span>
+              <span class="ms-2"
+                >{{ producto.precio * producto.cantidad }}€</span
+              >
+            </div>
+          </li>
+          }
+        </ul>
+        <div class="mt-3 text-end">
+          <h5>Total: {{ reserva.precioTotal }}€</h5>
+        </div>
+      </div>
+    </div>
+    } } }
+  </div>
+</div>

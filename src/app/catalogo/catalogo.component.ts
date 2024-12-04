@@ -10,7 +10,7 @@ import { Producto } from '../interfaces/producto';
   standalone: true,
   imports: [CommonModule, FormsModule, TarjetaProductoComponent],
   templateUrl: './catalogo.component.html',
-  styleUrl: './catalogo.component.css'
+  styleUrl: './catalogo.component.css',
 })
 export class CatalogoComponent implements OnInit {
   productos: Producto[] = [];
@@ -25,15 +25,15 @@ export class CatalogoComponent implements OnInit {
     this.cargarProductos();
   }
 
+ /* carga todos los productos y extrae las categorias disponibles */
   cargarProductos() {
-    this.productosService.getProductos().subscribe(productos => {
+    this.productosService.getProductos().subscribe((productos) => {
       this.productos = productos;
       this.productosFiltrados = productos;
       let todasLasCategorias: string[] = [];
-      
 
-      for(let producto of productos) {
-        if(!todasLasCategorias.includes(producto.categoria)) {
+      for (let producto of productos) {
+        if (!todasLasCategorias.includes(producto.categoria)) {
           todasLasCategorias.push(producto.categoria);
         }
       }
@@ -41,29 +41,25 @@ export class CatalogoComponent implements OnInit {
     });
   }
 
+  /* filtra por nombre de producto y categoría */
   filtrarProductos() {
-
     let productosFiltrados = this.productos;
     if (this.terminoBusqueda !== '') {
-      productosFiltrados = productosFiltrados.filter(producto => {
+      productosFiltrados = productosFiltrados.filter((producto) => {
         const nombre = producto.nombre.toLowerCase();
         const descripcion = producto.descripcion.toLowerCase();
         const busqueda = this.terminoBusqueda.toLowerCase();
-        
+
         return nombre.includes(busqueda) || descripcion.includes(busqueda);
       });
     }
 
     if (this.categoriaSeleccionada !== '') {
-      productosFiltrados = productosFiltrados.filter(producto => {
+      productosFiltrados = productosFiltrados.filter((producto) => {
         return producto.categoria === this.categoriaSeleccionada;
       });
     }
 
     this.productosFiltrados = productosFiltrados;
   }
-
-  agregarAlCarrito(producto: Producto) {
-    alert(`${producto.nombre} añadido al carrito`);
-}
 }

@@ -1,34 +1,77 @@
 <header class="custom-navbar">
   <nav class="navbar navbar-expand-lg">
     <div class="container">
-      <a class="navbar-brand" routerLink="/">PANdora</a>
-      
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <a class="navbar-brand" routerLink="/catalogo">PANdora</a>
+
+      @if (authService.isLoggedIn()) {
+      <!--pantalla grande-->
+      <span
+        class="navbar-text position-absolute start-50 translate-middle-x fs-5 d-none d-lg-block"
+      >
+        ¡Bienvenido/a {{ authService.getUserName() }}!
+      </span>
+
+      <!--pantalla movil y tablet-->
+      <span
+        class="navbar-text position-absolute start-50 translate-middle-x fs-5 text-nowrap"
+      >
+        ¡Bienvenido/a {{ authService.getUserName() }}!
+      </span>
+      }
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
-      
+
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/catalogo" routerLinkActive="active">
+            <a
+              class="nav-link"
+              routerLink="/catalogo"
+              routerLinkActive="active"
+            >
               Catálogo
             </a>
           </li>
+          @if (authService.isLoggedIn()) {
           <li class="nav-item">
-            <a class="nav-link" routerLink="/reservas" routerLinkActive="active">
+            <a
+              class="nav-link"
+              routerLink="/reservas"
+              routerLinkActive="active"
+            >
               Mis Reservas
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/admin" routerLinkActive="active">
-              Administración
-            </a>
+            <a class="nav-link" routerLink="/carrito" routerLinkActive="active"
+              >Carrito</a
+            >
           </li>
+          @if (authService.isAdmin()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin" routerLinkActive="active"
+              >Administración</a
+            >
+          </li>
+          } }
         </ul>
-        
+
         <div class="navbar-nav">
+          @if (!authService.isLoggedIn()) {
           <a class="nav-link" routerLink="/login">Iniciar Sesión</a>
           <a class="nav-link" routerLink="/registro">Registrarse</a>
+          } @else {
+          <a class="nav-link" (click)="logout()" style="cursor: pointer"
+            >Cerrar Sesión</a
+          >
+          }
         </div>
       </div>
     </div>

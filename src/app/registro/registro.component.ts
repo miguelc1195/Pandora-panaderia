@@ -33,14 +33,14 @@ export class RegistroComponent {
     }
   }
 
+  /* resgistro con validación de errores, lleva al catálogo */
   onRegister() {
     if (this.email && this.username && this.password) {
       this.authService
         .register(this.email, this.username, this.password)
         .subscribe({
           next: () => {
-            alert('Usuario registrado correctamente');
-            this.router.navigate(['/login']);
+            this.router.navigate(['/catalogo']);
           },
           error: (error) => {
             this.errorMessage = error.code;

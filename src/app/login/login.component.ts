@@ -30,11 +30,11 @@ export class LoginComponent {
     }
   }
 
+  /* login con validación, te lleva al catálogo */
   onLogin() {
     if (this.email && this.password) {
       this.authService.login(this.email, this.password).subscribe({
         next: () => {
-          alert('Inicio de sesión exitoso');
           this.router.navigate(['/catalogo']);
         },
         error: (error) => {
